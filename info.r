@@ -1,0 +1,5 @@
+name = "Maxim Dorofiyenko"
+SID = "22314882"
+email = "maxdor@berkeley.edu"
+github_name = "maxdor"
+status = "enrolled"
