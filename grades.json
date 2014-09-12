@@ -5,5 +5,19 @@
     "email": "maxdor@berkeley.edu", 
     "github_name": "maxdor", 
     "status": "enrolled", 
-    "grades": {}
+    "grades": {
+        "hw1": {
+            "note": "", 
+            "hash": "18fa65e785fe9bdfd3edd765155c573f52d9975a", 
+            "earned": 14, 
+            "possible": 14, 
+            "penalty": 0, 
+            "parts": {
+                "ex1": {
+                    "possible": 14, 
+                    "earned": 14
+                }
+            }
+        }
+    }
 }
