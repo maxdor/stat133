@@ -1,3 +1,7 @@
+library(RUnit)
+errMsg = function(err) print(paste("ERROR:", err))
+load("hw5-tests.rda")
+
 # Implement the function "listLengths". Your function should take the
 # follwoing arguments:
 #
@@ -9,8 +13,11 @@
 #   element of <data.list>
 
 listLengths <- function(data.list) {
-
-    # your code here
+  lengths <- rep(0, length(data.list))
+  for (i in 1:length(data.list)) {
+    lengths[i] <- length(data.list[[i]])
+  }
+  return(lengths)
 }
 
 tryCatch(checkEquals(list.lengths.t, listLengths(ex3.test2)),
@@ -34,8 +41,13 @@ tryCatch(checkEquals(list.lengths.t, listLengths(ex3.test2)),
 # column i and j.
 
 standMatrixVariables <- function(data.matrix) {
-
-    # your code here
+  mat <- matrix(0, nrow = ncol(data.matrix), ncol = ncol(data.matrix))
+  for (i in 1:ncol(ex3.test4)) {
+    for (j in 1:ncol(ex3.test4)) {
+      mat[i,j] <- (mean(data.matrix[,j]) - mean(data.matrix[,i])) / sd(c(data.matrix[,i], data.matrix[,j]))
+    }
+  }
+  return(mat)
 }
 
 tryCatch(checkEquals(stand.matrix.variables.t,
@@ -59,14 +71,14 @@ tryCatch(checkEquals(stand.matrix.variables.t,
 #   period for the two given groups. Use the group1 subset the first
 #   argument, group 2 as the second argument and the alternative direction
 #   specified by <test.alternative>
-
+data <- read.csv("babies.csv")
 
 testGroupsGestation <- function(data, group1.idcs, group2.idcs,
                                 test.alternative='two.sided') {
 
     stopifnot(!any(group1.idcs %in% group2.idcs))
 
-    # your code here
+    t.test(data[group1.idcs, "gestation"], data[group2.idcs, "gestation"], alternative = test.alternative)
 }
 
 tryCatch(checkEquals(test.groups.gestation.t$p.value,
@@ -79,7 +91,7 @@ tryCatch(checkEquals(test.groups.gestation.t$p.value,
 # variable as <smoking.test>
 
 # your code here
-#smoke.idcs <- your code here
-#non.smoke.idcs <- your code here
-#smoking.test <- your code here
+smoke.idcs <- which(data$smoke == 1)
+non.smoke.idcs <- which(data$smoke != 1)
+smoking.test <- testGroupsGestation(data, smoke.idcs, non.smoke.idcs, test.alternative='less')
 
