@@ -11,7 +11,7 @@
 betFun <- function(current.wealth,  previous.winnings=NA) {
 
     # your code here
-    bet <- max(bet, 0)
+    bet <- max(current.wealth / 3, 0)
     return(min(bet, current.wealth))
 }
 
@@ -29,9 +29,25 @@ betFun <- function(current.wealth,  previous.winnings=NA) {
 # wealth after playing a game for <max.turns> rounds. If your wealth falls below
 # 0, the simulation should end.
 gamble <- function(bet.FUN, init.wealth=50, prob.win=0.52, max.turns=25) {
-
-
+  current.wealth <- init.wealth
+  bet <- bet.FUN(current.wealth, 0)
+  games <- rbinom(max.turns, 1, prob.win)
+  
+  for(turn in 1:max.turns) {
+    if(games[turn] == 1) {
+      current.wealth <- current.wealth + bet
+      bet <- bet.FUN(current.wealth, bet)
+    } else {
+      current.wealth <- current.wealth - bet
+      bet <- bet.FUN(current.wealth, -bet)
+    }
+    
+    if(current.wealth < 0) break
+    if(current.wealth > 2.5 * init.wealth) break
+  }
+  return(current.wealth - init.wealth)
 }
 
+money <- replicate(1000, gamble(betFun))
 
 
