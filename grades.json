@@ -52,6 +52,20 @@
                     "earned": 16
                 }
             }
+        }, 
+        "hw4": {
+            "note": "", 
+            "hash": "0cc461228084218062b03622a69636e223192c22", 
+            "earned": 31, 
+            "possible": 31, 
+            "penalty": 0, 
+            "parts": {
+                "hw4": {
+                    "possible": 31, 
+                    "earned": 31
+                }
+            }
         }
-    }
+    }, 
+    "section": "lab3"
 }
