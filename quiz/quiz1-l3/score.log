@@ -1,0 +1,15 @@
+INFO:root:Executed R('load(\'../../instructor/assignments/quiz/quiz1-l3/quiz1-l3-tests.rda\')')
+INFO:root:(1 points) R('all.equal(mean.GDP, test$var1)')[0] is True
+INFO:root:(1 points) R('all.equal(max.GDP, test$var2)')[0] is True
+INFO:root:(1 points) R('all.equal(female.prop, test$app)')[0] is True
+INFO:root:(1 points) R('all.equal(subset.nobronze, test$sub1)')[0] is True
+INFO:root:(1 points) R('all.equal(subset.threebronze, test$sub2)')[0] is True
+INFO:root:(1 points) R('all.equal(subset.nobronze.pop, test$sub3)')[0] is True
+INFO:root:(1 points) R('all.equal(subset.threebronze.pop, test$sub4)')[0] is True
+INFO:root:Executed R('fun.output <- medpopByGDPPP(test$fun1, test$fun2, test$fun3)')
+INFO:root:(2 points) R('all.equal(fun.output, test$fun.out)')[0] is True
+INFO:root:(1 points) Is there a title is y
+INFO:root:(1 points) Are there axis labels? is y
+INFO:root:(1 points) plotting character 10? is y
+INFO:root:(1 points) red horizontal line at 0.50? is y
+INFO:root:You got a 13 out of 13.
