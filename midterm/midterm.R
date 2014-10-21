@@ -105,12 +105,12 @@ hist(infants$dht)
 
 ## Create a table which tallies the education level of mothers (varible ed in the data frame)
 ## against the education level of the fathers (variable ded in the data frame)
-
+ed.table <- table(infants$ed, infants$ded)
 
 ########################################### FOURTH PART
 ## Write a function that takes as input a vector x and returns a standardized vector
 ## (i.e. x after subtracting the mean and dividing with the sd)
 
 standardize <- function(x){
-
+  return((x - mean(x))/sd(x))
 }
