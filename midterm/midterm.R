@@ -61,18 +61,26 @@ name.stations <- names(rain)
 
 ## In one R command create the variable [[ n.obs ]] , a vector which stores the number
 ## of observations at EACH of the stations in rain
-
+n.obs <- sapply(rain, length)
 
 ## In one R command create the variable [[ max.rain ]] which stores the maximum
 ## rainfall for each weather station.
+max.rain <- sapply(rain, max)
 
 ## Plot a boxplot that shows the distribution of rainfall at each station
 ## (hint: there should be 5 "boxes" in the boxplot)
+boxplot(sapply(rain, summary))
 
 ## Make a scatterplot that shows the rainfall at station 1 in year 2000.
 ## Precipitation should go on the y-axis and day on the x-axis
 ## Make new labels for the x- and y-axis.
 ## Hint: the date information is stored in the object day.
+indices <- day[[1]] >= 2000 & day[[1]] < 2001
+plot(rain[[1]][indices]~day[[1]][indices], 
+     main = "Rainfall in Station 1 in the year 2000",
+     xlab = "Date",
+     ylab = "Rain",
+     type = 'l')
 
 ########################################### THIRD PART
 #### Load in the infant data
@@ -87,9 +95,13 @@ fit <- lm(bwt ~ gestation, data=infants)
 ## Do a scatterplot of birthweight (on y-axis) vs. gestation (on x-axis)
 ## Add to the plot the line estimated in fit (hint: find the coefficients)
 ## Plot the line in red and put your own x- and y-axis labels on the plot.
-
+plot(infants$bwt ~ infants$gestation,
+     xlab = "Gestation",
+     ylab = "Birthweight")
+abline(fit$coefficients, col = "red")
 
 ## Plot a histogram of the fathers' heights (varible dht in the data frame).
+hist(infants$dht)
 
 ## Create a table which tallies the education level of mothers (varible ed in the data frame)
 ## against the education level of the fathers (variable ded in the data frame)
