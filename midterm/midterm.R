@@ -37,6 +37,7 @@ m <- matrix(seq(10, 120, 10), nrow = 3, ncol = 4, byrow = TRUE)
 ## Then add the column names :  num, lett, even
 n <- data.frame(num = 1:10, lett = letters[1:10])
 n$even <- n$num %% 2 == 0
+names(n) <- c("num", "lett", "even") #redundant
 
 ## Create a variable [[ p ]] that is a list and whose elements are x, y, z and m from above.
 p <- list(x, y, z, n)
@@ -69,7 +70,7 @@ max.rain <- sapply(rain, max)
 
 ## Plot a boxplot that shows the distribution of rainfall at each station
 ## (hint: there should be 5 "boxes" in the boxplot)
-boxplot(sapply(rain, summary))
+boxplot(rain)
 
 ## Make a scatterplot that shows the rainfall at station 1 in year 2000.
 ## Precipitation should go on the y-axis and day on the x-axis
