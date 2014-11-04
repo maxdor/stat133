@@ -26,44 +26,22 @@ bml.init <- function(r, c, p){
 ## NOTE : the function should move the red cars once and the blue cars once,
 ## you can write extra functions that do just a step north or just a step east.
 
+move_east <- function(m) {
+  blocked <- m[, c(2:ncol(m), 1)]!= 0
+  red_cars <- m * (m == 1)
+  m * (m != 1) + red_cars * blocked + (red_cars * !blocked)[, c(ncol(m), 1:(ncol(m)-1))]
+}
+
+move_north <- function(m) {
+  blocked <- m[c(nrow(m), 1:(nrow(m)-1)), ]!= 0
+  blue_cars <- m*(m == 2)
+  m * (m != 2) + blue_cars * blocked + (blue_cars * !blocked)[c(2:nrow(m), 1), ]
+}
+
 bml.step <- function(m){
-  n <- m
-  grid.new <- FALSE
-  
-  # Move red cars
-  for (j in 1:ncol(m)) {
-    for (i in 1:nrow(m)) {
-      if (m[i, j] == 1) {
-        newj <- ifelse(j + 1 > ncol(m), 1, j + 1)
-        
-        if (m[i, newj] == 0) {
-          grid.new <- TRUE
-          n[i, j] <- 0
-          n[i, newj] <- 1
-        }
-      }
-    }
-  }
-  
-  m <- n
-  
-  # Move blue cars
-  for (i in nrow(m):1) {
-    for (j in 1:ncol(m)) {
-      if (m[i, j] == 2) {
-        newi <- ifelse(i - 1 == 0, nrow(m), i - 1)
-        
-        if (m[newi, j] == 0) {
-          grid.new <- TRUE
-          n[i, j] <- 0
-          n[newi, j] <- 2
-        }
-      }
-    }
-  }
-  
-  m <- n
-  return(list(m, grid.new))
+  m.new <- move_north(move_east(m))
+  grid.new <- !identical(m.new, m)
+  return(list(m.new, grid.new))
 }
 
 #### Function to do a simulation for a given set of input parameters

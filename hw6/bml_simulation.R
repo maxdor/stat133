@@ -6,7 +6,7 @@
 #### when you write up your results.
 #### The output can e.g. be how many steps the system took until it hit gridlock or
 #### how many steps you observered before concluding that it is in a free flowing state.
-
+library(dplyr)
 source("GitHub/src/stat133/hw6/bml_functions.R")
 set.seed(1)
 
@@ -49,7 +49,6 @@ densities <- seq(from = .4, to = .6, by = .01)
 repititions <- 1:10
 
 system.time(step2 <- sim(lengths, widths, densities, repititions))
-library(dplyr)
 step2 <- group_by(step2, p) %>%
   summarize(iter = mean(iter))
 
@@ -87,37 +86,77 @@ step3 <- read.csv("R/step3.csv")
 lengths <- 50
 widths <- 50
 densities <- seq(from = .4, to = .5, by = .01)
-repititions <- 1:5
+repititions <- 1:20
 
 system.time(step4 <- sim(lengths, widths, densities, repititions))
+step4 <- group_by(step4, p) %>%
+  summarize(iter = mean(iter))
 
-write.csv(step4, "R/step4.csv")
+plot(step4$iter~step4$p, xlab = "p", ylab = "Iterations",
+     main = "50x50 Matrix", type = 'l')
+
+write.csv(step4, "R/step4.csv", row.names = FALSE)
 step4 <- read.csv("R/step4.csv")
 
 lengths <- 5
 widths <- 50
-densities <- seq(from = .4, to = .8, by = .01)
-repititions <- 1
+densities <- seq(from = .55, to = .85, by = .01)
+repititions <- 1:20
 
 system.time(step5 <- sim(lengths, widths, densities, repititions))
+step5 <- group_by(step5, p) %>%
+  summarize(iter = mean(iter))
 
-write.csv(step5, "R/step5.csv")
+plot(step5$iter~step5$p, xlab = "p", ylab = "Iterations",
+     main = "5x50 Matrix", type = 'l')
+
+write.csv(step5, "R/step5.csv", row.names = FALSE)
 step5 <- read.csv("R/step5.csv")
 
 lengths <- 50
 widths <- 5
-densities <- seq(from = .65, to = .95, by = .01)
-repititions <- 1
+densities <- seq(from = .55, to = .85, by = .01)
+repititions <- 1:20
 
 system.time(step6 <- sim(lengths, widths, densities, repititions))
+step6 <- group_by(step6, p) %>%
+  summarize(iter = mean(iter))
 
 plot(step6$iter~step6$p, xlab = "p", ylab = "Iterations",
-     main = "5x20 Matrix")
+     main = "50x5 Matrix", type = 'l')
 
-write.csv(step6, "R/step6.csv")
+write.csv(step6, "R/step6.csv", row.names = FALSE)
 step6 <- read.csv("R/step6.csv")
 
-lengths <- 2:20
-widths <- 2:20
-densities <- seq(from = .01, to = .99, by = .01)
+# Plot 50x5 vs 5x50
+plot(step5$iter~step5$p, xlab = "p", ylab = "Iterations", type = 'l')
+points(step6$iter~step6$p, xlab = "p", ylab = "Iterations",
+     type = 'l', col = "dodgerblue")
+legend("topright",
+       c("50x5", "5x50"),
+       col = c("dodgerblue", "black"), lwd = c(2.5, 2.5))
+
+#lengths <- c(5,20)
+#widths <- c(5,20)
+#densities <- seq(from = .2, to = .8, by = .01)
+#repititions <- 1:20
+
+#system.time(step7 <- sim(lengths, widths, densities, repititions))
+#write.csv(step7, "R/step7.csv")
+#step7 <- read.csv("R/step7.csv")
+
+# Try to find exact point where transition happens
+
+lengths <- 100
+widths <- 100
+densities <- seq(from = .4, to = .45, by = .001)
 repititions <- 1:10
+
+system.time(step8 <- sim(lengths, widths, densities, repititions))
+step8 <- group_by(step8, p) %>%
+  summarize(iter = mean(iter))
+
+plot(step8$iter~step8$p, xlab = "p", ylab = "Iterations",
+     main = "50x5 Matrix", type = 'l')
+
+write.csv(step8, "R/step8.csv", row.names = FALSE)
