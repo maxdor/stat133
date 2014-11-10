@@ -8,9 +8,14 @@
 ## that stores the state of the system (i.e. location of red and blue cars)
 
 bml.init <- function(r, c, p){
-
+  points <- runif(r * c)
+  points[points <= p/2] <- 1
+  points[points > p/2 & points < p] <- 2
+  points[points < 1] <- 0
   
-   #return(m)
+  m <- matrix(points, nrow = r, ncol = c)
+  
+  return(m)
 }
 
 #### Function to move the system one step (east and north)
@@ -21,10 +26,22 @@ bml.init <- function(r, c, p){
 ## NOTE : the function should move the red cars once and the blue cars once,
 ## you can write extra functions that do just a step north or just a step east.
 
-bml.step <- function(m){
+move_east <- function(m) {
+  blocked <- m[, c(2:ncol(m), 1)]!= 0
+  red_cars <- m * (m == 1)
+  m * (m != 1) + red_cars * blocked + (red_cars * !blocked)[, c(ncol(m), 1:(ncol(m)-1))]
+}
 
-  
-   #return(list(m, grid.new))
+move_north <- function(m) {
+  blocked <- m[c(nrow(m), 1:(nrow(m)-1)), ]!= 0
+  blue_cars <- m*(m == 2)
+  m * (m != 2) + blue_cars * blocked + (blue_cars * !blocked)[c(2:nrow(m), 1), ]
+}
+
+bml.step <- function(m){
+  m.new <- move_north(move_east(m))
+  grid.new <- !identical(m.new, m)
+  return(list(m.new, grid.new))
 }
 
 #### Function to do a simulation for a given set of input parameters
@@ -32,5 +49,17 @@ bml.step <- function(m){
 ## Output : *up to you* (e.g. number of steps taken, did you hit gridlock, ...)
 
 bml.sim <- function(r, c, p){
-
+  m <- bml.init(r, c, p)
+  limit <- 1e4
+  moved <- TRUE
+  iter <- 1
+  
+  while (moved == TRUE & iter < limit) {
+    result <- bml.step(m)
+    m <- result[[1]]
+    moved <- result[[2]]
+    iter <- iter + 1
+  }
+  
+  return(list(Free_Flowing = moved, Iterations = iter))
 }
