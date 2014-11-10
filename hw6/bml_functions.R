@@ -39,6 +39,10 @@ move_north <- function(m) {
 }
 
 bml.step <- function(m){
+  if (nrow(m) == 1 | length(m) == 1) {
+    return(list(m, FALSE))
+  }
+  
   m.new <- move_north(move_east(m))
   grid.new <- !identical(m.new, m)
   return(list(m.new, grid.new))
