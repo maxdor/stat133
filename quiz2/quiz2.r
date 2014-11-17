@@ -121,11 +121,15 @@ for (i in 1:500) {
 # the average total time spent in OH.
 # Save the result in a matrix called avg_wait_total.
 # avg_wait_total is a 2x500 matrix (without any row names or column names).
-# avg_wait_total <- your code here
 
+waits <- sapply(1:length(sim500), function(x) {
+  mean(sim500[[x]]$wait)
+})
+totals <- sapply(1:length(sim500), function(x) {
+  mean(sim500[[x]]$total)
+})
 
-
-
+avg_wait_total <- rbind(waits, totals)
 
 #-----------------------------------------------------------------------
 # Suppose Johnny is not feeling well and he needs to take a break of 
@@ -151,7 +155,9 @@ for (i in 1:500) {
 # <br_times>: a numeric vector of break times
 
 break_times <- function(n){
-  # your code here
+  breaks <- rnorm(n, mean = 4, sd = sqrt(2))
+  breaks[breaks < 0] <- 0
+  return(breaks)
 }
 
 # Write a function called serv_wait_sick that computes
@@ -170,7 +176,26 @@ break_times <- function(n){
 # Remark: There is no randomness in this function.
 
 serv_wait_sick <- function(inter, serv, br_times){
-  # your code here
+  for (i in 1:length(serv)) {
+    if (i > 5) {
+      serv[i] <- serv[i] * 1.5
+    }
+  }
+  
+  
+  
+  wait <- waiting_times(inter, serv)
+  if (length(wait > 5)) {
+    wait[6:(length(wait))] <- wait[6:(length(wait))] + 20
+  }
+  
+  for (i in 1:length(wait)) {
+    if (i %% 2 == 0) {
+      wait[i] <- wait[i] + br_times[i/2]
+    }
+  }
+  
+  return(data.frame(serv, wait))
 }
 
 # End of quiz.
