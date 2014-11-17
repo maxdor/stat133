@@ -9,7 +9,7 @@
 # Output: <num>: a Poisson(k) random variable (a single number)
 
 num_students <- function(k) {
-  # your code here
+  return(rpois(1, k))
 }
 
 # Assume all students arrive at different times.
@@ -27,7 +27,7 @@ num_students <- function(k) {
 # random variables (a vector of length num)
 
 interarrival_times <- function(num) {
-  # your code here
+  return(rexp(num, 1/6))
 }
 
 # For student i, it takes Z_i minutes for Johnny to answer questions.
@@ -42,7 +42,7 @@ interarrival_times <- function(num) {
 # random variables (a vector of length num)
 
 service_times <- function(num) {
-  # your code here
+  return(rexp(num, 1/8))
 }
 
 # Compute the waiting time for each student.
@@ -66,7 +66,22 @@ service_times <- function(num) {
 # <wait>: a vector that contains the waiting time for each student
 
 waiting_times <- function(inter, serv){
-  # your code here
+  wait <- rep(0, length(inter))
+  
+  for (i in 1:length(inter)) {
+    if (i == 1) {
+      wait[i] <- 0
+    } else {
+      temp <- serv[i-1] + wait[i-1] - inter[i]
+      
+      if (temp < 0) {
+        wait[i] <- 0
+      } else {
+        wait[i] <- temp
+      }
+    }
+  }
+  return(wait)
 }
 
 # Simulation
@@ -81,7 +96,12 @@ waiting_times <- function(inter, serv){
 #   total: total times spent in Johnny's OH (serv + wait)
 
 queueing_sim <- function(k) {
-  # your code here
+  num <- num_students(k)
+  inter <- interarrival_times(num)
+  serv <- service_times(num)
+  wait <- waiting_times(inter, serv)
+  
+  return(data.frame(inter, serv, wait, total = serv + wait))
 }
 
 set.seed(1234)
@@ -90,8 +110,11 @@ set.seed(1234)
 # sim500 is a list of 500 data frames.
 # sim500 <- your code here
 
+sim500 <- list()
 
-
+for (i in 1:500) {
+  sim500[[i]] <- queueing_sim(12)
+}
 
 
 # For each simulation, compute the average waiting time and
