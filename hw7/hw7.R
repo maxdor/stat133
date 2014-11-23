@@ -188,16 +188,16 @@ uniqueWords <- sort(unique(unlist(speechWords)))
 # You may want to use an apply statment to first create a list of word vectors, one for each speech.
 
 # your code to create [wordMat] here:
-wordCount <- matrix(nrow = length(uniqueWords))
-names(wordCount) <- uniqueWords
+wordMat <- matrix(nrow = length(uniqueWords))
+names(wordMat) <- uniqueWords
 for (j in 1:length(speechWords)) {
   counts <- rep(0, length(uniqueWords))
   for (i in 1:length(uniqueWords)) {
     counts[i] <- sum(uniqueWords[i] == speechWords[[j]])
   }
-  wordCount <- cbind(wordCount, counts)
-  print(j)
+  wordMat <- cbind(wordMat, counts)
 }
+wordMat <- wordMat[, -1]
 
 # Load the dataframe [speechesDF] which has two variables,
 # president and party affiliation (make sure to keep this line in your code):
@@ -220,8 +220,8 @@ months <- c("January", "February", "March", "April", "May", "June", "July", "Aug
 speechMo_num <- match(speechMo, months)
 
 # Update the data frame
-speechesDF <- data.frame(speechesDF, Year = speechYr, Month = speechMo_num, Words = words,
-                         Chars = chars, Sentences = sentences)
+speechesDF <- data.frame(speechesDF, yr = speechYr, month = speechMo_num, words = words,
+                         chars = chars, sent = sentences)
 
 ######################################################################
 ## Create a matrix [presidentWordMat] 
@@ -229,9 +229,12 @@ speechesDF <- data.frame(speechesDF, Year = speechYr, Month = speechMo_num, Word
 # and that colum is the sum of all the columns corresponding to speeches make by said president.
 
 # note that your code will be a few lines...
-presidentWordMat <- aggregate(speechesDF[, c(5:7)], by=list(speechesDF$Pres), sum)
-names(presidentWordMat)[1] <- "President"
+presidentWordMat <- t(wordMat)
+presidentWordMat <- aggregate(presidentWordMat, by=list(speechesDF$Pres), sum)
 presidentWordMat <- t(presidentWordMat)
+colnames(presidentWordMat) <- presidentWordMat[1, ]
+presidentWordMat <- presidentWordMat[-1, ]
+class(presidentWordMat) <- "numeric"
   
 # At the beginning of this file we sourced in a file "computeSJDistance.R"
 # It has the following function:
@@ -244,20 +247,23 @@ presidentWordMat <- t(presidentWordMat)
 # Document Frequency
 # [docFreq]: vector of the same length as [uniqueWords], 
 # count the number of presidents that used the word
-
-  docFreq <- <your code here>
+docFreq <- t(wordMat)
+docFreq <- aggregate(docFreq, by=list(speechesDF$Pres), sum)
+docFreq[docFreq > 0] <- 1
+docFreq <- colSums(docFreq[, -1])
     
 # Call the function computeSJDistance() with the arguments
 # presidentWordMat, docFreq and uniqueWords
 # and save the return value in the matrix [presDist]
 
-presDist <- computeSJDistance( < insert arguments here >)
+presDist <- computeSJDistance(presidentWordMat, docFreq, uniqueWords)
+rownames(presDist) <- unique(speechesDF$Pres)
 
 ## Visuzlise the distance matrix using multidimensional scaling.
 # Call the function cmdscale() with presDist as input.
 # Store the result in the variable [mds] by 
 
-mds <- <your code here>
+mds <- cmdscale(presDist)
 
 # First do a simple plot the results:
 plot(mds)
@@ -271,11 +277,12 @@ plot(mds)
 # is the party affiliation and the names attribute has the names of the presidents.
 # Hint: the info is in speechesDF$party and speechesDF$Pres
 
-presParty <- <your code here>
+presParty <- unique(speechesDF[, 1:2])$party
+names(presParty) <- unique(speechesDF$Pres)
   
 # use rainbow() to pick one unique color for each party (there are 6 parties)
 
-cols <- <your code here>
+cols <- rainbow(6)
 
 # Now we are ready to plot again.
 # First plot mds by calling plot() with type='n' (it will create the axes but not plot the points)
@@ -283,13 +290,14 @@ cols <- <your code here>
 # then call text() with the presidents' names as labels and the color argument
 # col = cols[presParty[rownames(presDist)]]
   
-plot(<your code here>)
-text(<your code here>)
+plot(mds, main = "Presidents", xlab = "", ylab = "", type = 'n')
+text(mds, names(presParty), col = cols[presParty[rownames(presDist)]])
 
 ### Use hierarchical clustering to produce a visualization of  the results.
 # Compare the two plots.
 hc = hclust(as.dist(presDist))
 plot(hc)
+# While visually different, the same presidents are grouped together.
 
 ## Final part 
 # Use the data in the dataframe speechesDF to create the plots:
@@ -301,13 +309,31 @@ plot(hc)
 
 # your plot statements below:
 
+plot(speechesDF$yr, speechesDF$sent, xlab = "Year", 
+     ylab = "Number of Sentences")
 
+# The number of sentences used doesnt seem to follow any trend or pattern.
+# There are some spikes, particularly around the turn of the 20th century
+# as well as some outliers.
 
+plot(speechesDF$yr, speechesDF$words, xlab = "Year", 
+     ylab = "Number of Words")
 
+plot(speechesDF$yr, speechesDF$chars, xlab = "Year", 
+     ylab = "Number of Characters")
 
+# These two plots have the same shape as the first but are on a different
+# scale.
 
+plot(speechesDF$yr, (speechesDF$chars/speechesDF$words), xlab = "Year", 
+     ylab = "Average Word Length")
 
+# Average word length seems to be going down slighly over time. Furthermore,
+# it seems to have a sinusoidal shape or seasonality to it.
 
+plot(speechesDF$yr, (speechesDF$words/speechesDF$sent), xlab = "Year", 
+     ylab = "Average Sentence Length")
 
-
-
+# This plot most definitely shows a a steady decline in sentence length over
+# time. Most recent speaches have average sentence lengths that are half of
+# what they were at the start.
