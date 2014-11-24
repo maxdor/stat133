@@ -202,7 +202,7 @@ wordMat <- wordMat[, -1]
 # Load the dataframe [speechesDF] which has two variables,
 # president and party affiliation (make sure to keep this line in your code):
 
-  load("speeches_dataframe.Rda")
+  load("speeches_dataframe_new.Rda")
 
 ## Now add the following variables to the  dataframe [speechesDF]:
 # yr - year of the speech (numeric) (i.e. [speechYr], created above)
@@ -277,7 +277,7 @@ plot(mds)
 # is the party affiliation and the names attribute has the names of the presidents.
 # Hint: the info is in speechesDF$party and speechesDF$Pres
 
-presParty <- unique(speechesDF[, 1:2])$party
+presParty <- unique(speechesDF[, c(1,3)])$party
 names(presParty) <- unique(speechesDF$Pres)
   
 # use rainbow() to pick one unique color for each party (there are 6 parties)
@@ -291,7 +291,7 @@ cols <- rainbow(6)
 # col = cols[presParty[rownames(presDist)]]
   
 plot(mds, main = "Presidents", xlab = "", ylab = "", type = 'n')
-text(mds, names(presParty), col = cols[presParty[rownames(presDist)]])
+text(mds, as.character(unique(speechesDF$initial)), col = cols[presParty[rownames(presDist)]])
 
 ### Use hierarchical clustering to produce a visualization of  the results.
 # Compare the two plots.
