@@ -112,6 +112,36 @@
                     "earned": 15
                 }
             }
+        }, 
+        "hw6": {
+            "note": "", 
+            "hash": "e26c1339442633fa1fd25e5328fa4d8cf0062dd2", 
+            "earned": 19, 
+            "possible": 20, 
+            "penalty": 0, 
+            "parts": {
+                "bml_rep": {
+                    "possible": 5, 
+                    "earned": 4
+                }, 
+                "bml_functions": {
+                    "possible": 15, 
+                    "earned": 15
+                }
+            }
+        }, 
+        "quiz2": {
+            "note": "", 
+            "hash": "bb0789ddc4f1a6a800eced38582aa64a48374304", 
+            "earned": 22, 
+            "possible": 26, 
+            "penalty": 0, 
+            "parts": {
+                "quiz2": {
+                    "possible": 26, 
+                    "earned": 22
+                }
+            }
         }
     }, 
     "section": "lab3"
