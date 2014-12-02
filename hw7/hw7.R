@@ -188,16 +188,16 @@ uniqueWords <- sort(unique(unlist(speechWords)))
 # You may want to use an apply statment to first create a list of word vectors, one for each speech.
 
 # your code to create [wordMat] here:
-wordMat <- matrix(nrow = length(uniqueWords))
-names(wordMat) <- uniqueWords
-for (j in 1:length(speechWords)) {
-  counts <- rep(0, length(uniqueWords))
-  for (i in 1:length(uniqueWords)) {
-    counts[i] <- sum(uniqueWords[i] == speechWords[[j]])
-  }
-  wordMat <- cbind(wordMat, counts)
-}
-wordMat <- wordMat[, -1]
+#wordMat <- matrix(nrow = length(uniqueWords))
+#names(wordMat) <- uniqueWords
+#for (j in 1:length(speechWords)) {
+#  counts <- rep(0, length(uniqueWords))
+#  for (i in 1:length(uniqueWords)) {
+#    counts[i] <- sum(uniqueWords[i] == speechWords[[j]])
+#  }
+#  wordMat <- cbind(wordMat, counts)
+#}
+#wordMat <- wordMat[, -1]
 
 # Load the dataframe [speechesDF] which has two variables,
 # president and party affiliation (make sure to keep this line in your code):
@@ -229,12 +229,12 @@ speechesDF <- data.frame(speechesDF, yr = speechYr, month = speechMo_num, words 
 # and that colum is the sum of all the columns corresponding to speeches make by said president.
 
 # note that your code will be a few lines...
-presidentWordMat <- t(wordMat)
-presidentWordMat <- aggregate(presidentWordMat, by=list(speechesDF$Pres), sum)
-presidentWordMat <- t(presidentWordMat)
-colnames(presidentWordMat) <- presidentWordMat[1, ]
-presidentWordMat <- presidentWordMat[-1, ]
-class(presidentWordMat) <- "numeric"
+#presidentWordMat <- t(wordMat)
+#presidentWordMat <- aggregate(presidentWordMat, by=list(speechesDF$Pres), sum)
+#presidentWordMat <- t(presidentWordMat)
+#colnames(presidentWordMat) <- presidentWordMat[1, ]
+#presidentWordMat <- presidentWordMat[-1, ]
+#class(presidentWordMat) <- "numeric"
   
 # At the beginning of this file we sourced in a file "computeSJDistance.R"
 # It has the following function:
@@ -247,26 +247,26 @@ class(presidentWordMat) <- "numeric"
 # Document Frequency
 # [docFreq]: vector of the same length as [uniqueWords], 
 # count the number of presidents that used the word
-docFreq <- t(wordMat)
-docFreq <- aggregate(docFreq, by=list(speechesDF$Pres), sum)
-docFreq[docFreq > 0] <- 1
-docFreq <- colSums(docFreq[, -1])
+#docFreq <- t(wordMat)
+#docFreq <- aggregate(docFreq, by=list(speechesDF$Pres), sum)
+#docFreq[docFreq > 0] <- 1
+#docFreq <- colSums(docFreq[, -1])
     
 # Call the function computeSJDistance() with the arguments
 # presidentWordMat, docFreq and uniqueWords
 # and save the return value in the matrix [presDist]
 
-presDist <- computeSJDistance(presidentWordMat, docFreq, uniqueWords)
-rownames(presDist) <- unique(speechesDF$Pres)
+#presDist <- computeSJDistance(presidentWordMat, docFreq, uniqueWords)
+#rownames(presDist) <- unique(speechesDF$Pres)
 
 ## Visuzlise the distance matrix using multidimensional scaling.
 # Call the function cmdscale() with presDist as input.
 # Store the result in the variable [mds] by 
 
-mds <- cmdscale(presDist)
+#mds <- cmdscale(presDist)
 
 # First do a simple plot the results:
-plot(mds)
+#plot(mds)
 
 # Customize this plot by:
 # -- remove x and y labels and put the title "Presidents" on the plot
@@ -290,13 +290,13 @@ cols <- rainbow(6)
 # then call text() with the presidents' names as labels and the color argument
 # col = cols[presParty[rownames(presDist)]]
   
-plot(mds, main = "Presidents", xlab = "", ylab = "", type = 'n')
-text(mds, as.character(unique(speechesDF$initial)), col = cols[presParty[rownames(presDist)]])
+#plot(mds, main = "Presidents", xlab = "", ylab = "", type = 'n')
+#text(mds, as.character(unique(speechesDF$initial)), col = cols[presParty[rownames(presDist)]])
 
 ### Use hierarchical clustering to produce a visualization of  the results.
 # Compare the two plots.
-hc = hclust(as.dist(presDist))
-plot(hc)
+#hc = hclust(as.dist(presDist))
+#plot(hc)
 # While visually different, the same presidents are grouped together.
 
 ## Final part 
