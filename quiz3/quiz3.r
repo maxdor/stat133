@@ -62,7 +62,14 @@ updateDate <- function(dates, old.yr) {
 #                     3   1
 countcatdog<- function(chvec){
   x <- tolower(chvec)
-  # your code here
+  cat <- gregexpr("cat", x)
+  cat <- length(attr(cat[[1]] ,"match.length"))
+  
+  dog <- gregexpr("dog", x)
+  dog <- length(attr(dog[[1]] ,"match.length"))
+  
+  vec <- c(cat = cat, dog = dog)
+  return(vec)
 }
 
 # Function 5 (3 points)
