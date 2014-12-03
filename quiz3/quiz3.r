@@ -120,8 +120,20 @@ sumDigits <- function(chvec){
 #   <DNA_final>: A character vector of two DNAs
 
 dnaTransform <- function(DNA.vec){
+  if (length(grep("ATTA", DNA.vec)) < 2) {
+    return(DNA.vec[1:2])
+  } else {
+    x <- grep("ATTA", DNA.vec)
+    DNA1 <- DNA.vec[x[1]]
+    DNA2 <- DNA.vec[x[2]]
     
-  # your code here
+    a1 <- substr(DNA1, 1, 5)
+    b1 <- substr(DNA1, 6, 10)
+    
+    a2 <- substr(DNA2, 1, 5)
+    b2 <- substr(DNA2, 6, 10)
+  }
+  return(c(paste0(a1, b2), paste0(a2, b1)))
 }
 
 # Some test cases:
