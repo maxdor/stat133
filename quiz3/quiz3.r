@@ -1,3 +1,4 @@
+here = T
 # Quiz 3
 # Number of Problems: 6
 # The quiz is out of 22 points.
@@ -12,8 +13,7 @@
 #   <num.at>: an integer indicating how many elements of <chvec> contain the "@"
 #     symbol. For example: numAtElements(c('karl', 'k@rl', '@@@')) should return 2
 numAtElements <- function(chvec){
-  
-  # your code here
+  length(grep("@", chvec))
 }
 
 # Function 2 (3 points)
@@ -25,8 +25,9 @@ numAtElements <- function(chvec){
 #   <newstring>: a character vector of length 1 where all ! symbols have been
 #     replaced by . symbols
 unexclaim <- function(chstring) {
-  
-  # your code here
+  split <- strsplit(chstring, "")
+  split <- sub("!", "\\.", split[[1]])
+  paste(split, collapse = "")
 }
 
 # Function 3 (3 points)
@@ -42,8 +43,9 @@ unexclaim <- function(chstring) {
 #     updated. For example updateDate(c('May, 2010', 'June, 2011'), '2010') should
 #     return 'May, 2015'.
 updateDate <- function(dates, old.yr) {
-  
-  # your code here
+  x <- grep(old.yr, dates)
+  new_dates <- dates[x]
+  sub(old.yr, "2015", new_dates)
 }
 
 # Function 4 (4 points)
@@ -59,7 +61,7 @@ updateDate <- function(dates, old.yr) {
 #                    cat dog
 #                     3   1
 countcatdog<- function(chvec){
-  
+  x <- tolower(chvec)
   # your code here
 }
 
